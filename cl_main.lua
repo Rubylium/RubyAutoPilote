@@ -28,17 +28,17 @@ function menu(menu)
     menu:AddItem(ConduiteRapide)
 
     
-    local Description = "Permet de gèrer la vitesse de l'auto pilote aléatoire"
-    local amount = {}
-    for i = 10, 100 do
+    local Description = "Permet de gèrer la vitesse de l'auto pilote aléatoire. ~b~10 = 35 ~ KmH"
+    for i = 1, 100 do
        amount[i] = i
     end
     
-    local ItemProgress = NativeUI.CreateProgressItem("Gestion Vitesse ", amount, 1, Description, true)
+    local ItemProgress = NativeUI.CreateProgressItem("Gestion Vitesse ", amount, 10, Description, true)
     menu:AddItem(ItemProgress)
     ItemProgress.OnProgressChanged = function(menu, item, newindex)
        if item == ItemProgress then
            vitesse = newindex + .0
+           print(vitesse)
        end
     end
     local aleatoire = NativeUI.CreateItem("Conduite Aléatoire", "~b~Active l'auto pilote aléatoire, bien pour vous balader sans savoir ou aller")
