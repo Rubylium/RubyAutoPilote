@@ -1,7 +1,7 @@
 ESX = nil
 Citizen.CreateThread(function()
 	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		TriggerEvent('esx:getSharedObjectX', function(obj) ESX = obj end)
 		Citizen.Wait(0)
 	end
 
@@ -16,7 +16,7 @@ _menuPool:WidthOffset(0)
 
 
 
-
+local amount = {}
 function menu(menu)
 	local stop = NativeUI.CreateItem("Stoppé l'auto pilote.", " ")
     menu:AddItem(stop)
@@ -26,6 +26,23 @@ function menu(menu)
     menu:AddItem(ConduiteRapideSafe)
     local ConduiteRapide = NativeUI.CreateItem("Conduite Rapide", "~b~Active l'auto pilote ~g~rapide ~b~Conduite ~r~Dangereuse en ville")
     menu:AddItem(ConduiteRapide)
+
+    
+    local Description = "Permet de gèrer la vitesse de l'auto pilote aléatoire"
+    local amount = {}
+    for i = 10, 100 do
+       amount[i] = i
+    end
+    
+    local ItemProgress = NativeUI.CreateProgressItem("Gestion Vitesse ", amount, 1, Description, true)
+    menu:AddItem(ItemProgress)
+    ItemProgress.OnProgressChanged = function(menu, item, newindex)
+       if item == ItemProgress then
+           vitesse = newindex + .0
+       end
+    end
+    local aleatoire = NativeUI.CreateItem("Conduite Aléatoire", "~b~Active l'auto pilote aléatoire, bien pour vous balader sans savoir ou aller")
+    menu:AddItem(aleatoire)
 
 	menu.OnItemSelect = function(sender, item, index)
 		if item == stop then
@@ -37,7 +54,9 @@ function menu(menu)
 		elseif item == ConduiteRapide then
 			AutoPilote("ConduiteRapide")
 		elseif item == ConduiteRapideSafe then
-			AutoPilote("ConduiteRapideSafe")
+            AutoPilote("ConduiteRapideSafe")
+        elseif item == aleatoire then
+            TaskVehicleDriveWander(GetPlayerPed(-1), GetVehiclePedIsIn(GetPlayerPed(-1), false), vitesse, 786603)
 		end
 	end
 end
